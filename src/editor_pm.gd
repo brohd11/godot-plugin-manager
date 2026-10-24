@@ -6,13 +6,11 @@ const UFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.UFile
 
 var plugin:EditorPlugin
 
-var _code_completions_instances:Dictionary = {}
 var _context_plugin_instances:Dictionary = {}
 var _inspector_plugin_instances:Dictionary = {}
 var _syntax_highlighter_instances:Dictionary = {}
 var _editor_plugin_instances:Dictionary = {}
 
-var code_completion_paths:Array = []
 var context_menu_plugin_paths:Array = []
 var inspector_plugin_paths:Array = []
 var syntax_highlighter_paths:Array = []
@@ -22,7 +20,6 @@ func _init(_plugin:EditorPlugin) -> void:
 	plugin = _plugin
 
 func add_plugins() -> void:
-	add_code_completions()
 	add_context_menu_plugins()
 	add_inspector_plugins()
 	add_syntax_highlighters()
@@ -31,38 +28,12 @@ func add_plugins() -> void:
 func remove_plugins() -> void:
 	if not is_instance_valid(plugin):
 		return
-	_remove_code_completions()
 	_remove_context_menu_plugins()
 	_remove_inspector_plugins()
 	_remove_syntax_highlighters()
 	_remove_editor_plugins()
 
 #region Add/Remove Logic
-
-#region Code Completions
-func add_code_completions(code_completions=null) -> void:
-	if code_completions == null:
-		code_completions = code_completion_paths
-	
-	for path_or_script in code_completions:
-		var script_data = _get_plugin_script(path_or_script)
-		if script_data.is_empty():
-			continue
-		var path = script_data[0]
-		var script:Script = script_data[1]
-		
-		var ins = script.new()
-		#if ins is 
-		plugin.add_child(ins)
-		_code_completions_instances[path] = ins
-
-func _remove_code_completions() -> void:
-	for path in _code_completions_instances.keys():
-		var ins = _code_completions_instances.get(path)
-		ins.queue_free()
-		_code_completions_instances.erase(path)
-
-#endregion
 
 #region Context Menu Plugins
 func add_context_menu_plugins(context_menu_plugins=null) -> void:
